@@ -1,0 +1,71 @@
+<div class="container">
+  <header class="header">
+    <h1 class="title">🏡 Zameen Property Finder</h1>
+    <p class="subtitle">
+      Discover beautiful properties in top cities of Pakistan
+    </p>
+  </header>
+
+  <div class="form">
+    <label for="city">Select City</label>
+    <select id="city" [(ngModel)]="citySlug" class="select">
+      <option value="Lahore-1-1">Lahore</option>
+      <option value="Karachi-2-1">Karachi</option>
+      <option value="Islamabad-3-1">Islamabad</option>
+      <option value="Rawalpindi-41-1">Rawalpindi</option>
+      <option value="Multan-15-1">Multan</option>
+      <option value="Faisalabad-16-1">Faisalabad</option>
+      <option value="Peshawar-17-1">Peshawar</option>
+      <option value="Gujranwala-327-1">Gujranwala</option>
+    </select>
+
+    <button (click)="fetchProperties()" class="fetch-btn">
+      🔍 Fetch Properties
+    </button>
+  </div>
+
+  @if (loading) {
+  <div class="loading">
+    <div class="spinner"></div>
+    <p>Fetching the latest properties...</p>
+  </div>
+  } @if (error) {
+  <div class="error">❌ {{ error }}</div>
+  } @if (!loading && !error && properties.length > 0) {
+  <div class="grid">
+    @for (item of properties; track item.link) {
+    <div class="card">
+      <div class="image-wrapper">
+        <img [src]="item.image" alt="Property image" />
+
+        <!-- 🕓 Added Badge -->
+        <span class="added-badge">{{ item.added }}</span>
+
+        <!-- 💰 Price Badge -->
+        <span class="price-badge">{{ item.price }}</span>
+
+        <!-- Overlay -->
+        <div class="overlay">
+          <a [href]="item.link" target="_blank" class="view-overlay-btn">
+            View Details 🔗
+          </a>
+        </div>
+      </div>
+
+      <div class="details">
+        <h3 class="property-title">{{ item.title }}</h3>
+        <p class="location">📍 {{ item.location }}</p>
+
+        <div class="tags">
+          <span class="tag">🛏️ {{ item.beds }}</span>
+          <span class="tag">🛁 {{ item.baths }}</span>
+          <span class="tag">📐 {{ item.area }}</span>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  } @if (!loading && !error && properties.length === 0) {
+  <div class="no-results">😕 No properties found for this city.</div>
+  }
+</div>
